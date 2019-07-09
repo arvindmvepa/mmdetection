@@ -1,4 +1,5 @@
 from .custom import CustomDataset
+from .siim import SiimDataset
 from .xml_style import XMLDataset
 from .coco import CocoDataset
 from .voc import VOCDataset
@@ -11,7 +12,7 @@ from .registry import DATASETS
 from .builder import build_dataset
 
 __all__ = [
-    'CustomDataset', 'XMLDataset', 'CocoDataset', 'VOCDataset', 'GroupSampler',
+    'CustomDataset', 'XMLDataset', 'SiimDataset','CocoDataset', 'VOCDataset', 'GroupSampler',
     'DistributedGroupSampler', 'build_dataloader', 'to_tensor', 'random_scale',
     'show_ann', 'ConcatDataset', 'RepeatDataset', 'ExtraAugmentation',
     'WIDERFaceDataset', 'DATASETS', 'build_dataset'
