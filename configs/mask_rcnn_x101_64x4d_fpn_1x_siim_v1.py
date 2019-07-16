@@ -166,7 +166,7 @@ evaluation = dict(interval=1)
 total_epochs = 96
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
-work_dir = './work_dirs/mask_rcnn_x101_64x4d_fpn_1x'
+work_dir = './work_dirs/mask_rcnn_x101_64x4d_fpn_1x_0'
 load_from = None
 resume_from = None
 workflow = [('train', 1)]
