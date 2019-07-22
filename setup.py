@@ -105,8 +105,8 @@ if __name__ == '__main__':
         license='Apache License 2.0',
         setup_requires=['pytest-runner'],
         tests_require=['pytest'],
-        install_requires=[
-            'mmcv>=0.2.6', 'numpy', 'matplotlib', 'six', 'terminaltables',
-            'pycocotools'
-        ],
+        # install_requires=[
+        # 'mmcv>=0.2.6', 'numpy', 'matplotlib', 'six', 'terminaltables',
+        # 'pycocotools'
+        # ],
         zip_safe=False)
