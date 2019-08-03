@@ -56,7 +56,7 @@ def multi_gpu_test(model, data_loader, tmpdir=None, show_dir=None):
             results_.append(result_)
 
         if show_dir:
-            out_file = os.path.join(show_dir, str(i))
+            out_file = os.path.join(show_dir, str(i)+".jpg")
             model.module.show_result(data, result_, dataset.img_norm_cfg, out_file=out_file)
 
         if rank == 0:
