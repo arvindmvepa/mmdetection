@@ -321,4 +321,5 @@ class CustomDataset(Dataset):
         data = dict(img=imgs, img_meta=img_metas)
         if self.proposals is not None:
             data['proposals'] = proposals
+        data["filename"] = img_info['filename']
         return data

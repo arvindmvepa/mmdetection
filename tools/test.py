@@ -27,7 +27,7 @@ def single_gpu_test(model, data_loader, show=False):
         results.append(result)
 
         if show:
-            model.module.show_result(data, result, dataset.img_norm_cfg)
+            model.module.show_result(data, result, dataset.img_norm_cfg, show=show)
 
         batch_size = data['img'][0].size(0)
         for _ in range(batch_size):
@@ -35,7 +35,7 @@ def single_gpu_test(model, data_loader, show=False):
     return results
 
 
-def multi_gpu_test(model, data_loader, tmpdir=None):
+def multi_gpu_test(model, data_loader, tmpdir=None, show_dir=None):
     model.eval()
     results = []
     dataset = data_loader.dataset
@@ -46,6 +46,12 @@ def multi_gpu_test(model, data_loader, tmpdir=None):
         with torch.no_grad():
             result = model(return_loss=False, rescale=True, **data)
         results.append(result)
+
+        if show_dir:
+            filename = data["filename"]
+            basename = os.path.basename(filename)
+            out_file = os.path.join(show_dir, basename)
+            model.module.show_result(data, result, dataset.img_norm_cfg, out_file=out_file)
 
         if rank == 0:
             batch_size = data['img'][0].size(0)

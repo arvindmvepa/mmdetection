@@ -92,7 +92,9 @@ class BaseDetector(nn.Module):
                     result,
                     img_norm_cfg,
                     dataset=None,
-                    score_thr=0.3):
+                    score_thr=0.3,
+                    show=False,
+                    out_file=None):
         if isinstance(result, tuple):
             bbox_result, segm_result = result
         else:
@@ -139,4 +141,5 @@ class BaseDetector(nn.Module):
                 bboxes,
                 labels,
                 class_names=class_names,
-                score_thr=score_thr)
+                score_thr=score_thr,
+                out_file=out_file)
