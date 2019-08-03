@@ -46,7 +46,7 @@ def multi_gpu_test(model, data_loader, tmpdir=None, show_dir=None):
     if show_dir:
         if not os.path.exists(show_dir):
             os.makedirs(show_dir)
-    for i, data in enumerate(data_loader):
+    for i, (data, file_name) in enumerate(data_loader):
         with torch.no_grad():
             result = model(return_loss=False, rescale=True, **data)
             if show_dir:
@@ -56,7 +56,8 @@ def multi_gpu_test(model, data_loader, tmpdir=None, show_dir=None):
             results_.append(result_)
 
         if show_dir:
-            out_file = os.path.join(show_dir, str(i)+".jpg")
+            file_name = os.path.basename(file_name)
+            out_file = os.path.join(show_dir, file_name)
             model.module.show_result(data, result_, dataset.img_norm_cfg, out_file=out_file)
 
         if rank == 0:

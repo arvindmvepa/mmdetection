@@ -118,8 +118,6 @@ class BaseDetector(nn.Module):
 
         for img, img_meta in zip(imgs, img_metas):
             h, w, _ = img_meta['img_shape']
-            print("img shape: {}".format(img.shape))
-            print("img_m shape: {}".format((h,w)))
             img_show = img[:h, :w, :]
 
             bboxes = np.vstack(bbox_result)
@@ -131,7 +129,6 @@ class BaseDetector(nn.Module):
                     color_mask = np.random.randint(
                         0, 256, (1, 3), dtype=np.uint8)
                     mask = maskUtils.decode(segms[i]).astype(np.bool)
-                    print("mask shape: {}".format(mask.shape))
                     img_show[mask] = img_show[mask] * 0.5 + color_mask * 0.5
             # draw bounding boxes
             labels = [

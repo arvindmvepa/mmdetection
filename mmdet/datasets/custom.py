@@ -166,8 +166,9 @@ class CustomDataset(Dataset):
 
     def __getitem__(self, idx):
         if self.test_mode:
-            # can return filename here
-            return self.prepare_test_img(idx)
+            img_info = self.img_infos[idx]
+            filename = img_info['filename']
+            return self.prepare_test_img(idx), filename
         while True:
             data = self.prepare_train_img(idx)
             if data is None:
