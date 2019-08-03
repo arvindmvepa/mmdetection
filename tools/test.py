@@ -118,6 +118,7 @@ def parse_args():
         choices=['proposal', 'proposal_fast', 'bbox', 'segm', 'keypoints'],
         help='eval types')
     parser.add_argument('--show', action='store_true', help='show results')
+    parser.add_argument('--show_dir', help='show dir for writing some results')
     parser.add_argument('--tmpdir', help='tmp dir for writing some results')
     parser.add_argument(
         '--launcher',
@@ -179,7 +180,7 @@ def main():
         outputs = single_gpu_test(model, data_loader, args.show)
     else:
         model = MMDistributedDataParallel(model.cuda())
-        outputs = multi_gpu_test(model, data_loader, args.tmpdir)
+        outputs = multi_gpu_test(model, data_loader, args.tmpdir, args.show_dir)
 
     rank, _ = get_dist_info()
     if args.out and rank == 0:
