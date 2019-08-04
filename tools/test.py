@@ -56,9 +56,9 @@ def multi_gpu_test(model, data_loader, tmpdir=None, show_dir=None):
             results_.append(result_)
 
         if show_dir:
-            dc = data['img_meta'][0]
-            data = dc.data
-            meta = data[0][0]
+            meta_dc = data['img_meta'][0]
+            meta_dc_data = meta_dc.data
+            meta = meta_dc_data[0][0]
             filename = meta["filename"]
             filename = os.path.basename(filename)
             out_file = os.path.join(show_dir, filename)
