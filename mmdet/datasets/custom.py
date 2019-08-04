@@ -166,9 +166,7 @@ class CustomDataset(Dataset):
 
     def __getitem__(self, idx):
         if self.test_mode:
-            img_info = self.img_infos[idx]
-            filename = img_info['filename']
-            return self.prepare_test_img(idx), filename
+            return self.prepare_test_img(idx)
         while True:
             data = self.prepare_train_img(idx)
             if data is None:
@@ -289,7 +287,8 @@ class CustomDataset(Dataset):
                 img_shape=img_shape,
                 pad_shape=pad_shape,
                 scale_factor=scale_factor,
-                flip=flip)
+                flip=flip,
+                filename=img_info['filename'])
             if proposal is not None:
                 if proposal.shape[1] == 5:
                     score = proposal[:, 4, None]
