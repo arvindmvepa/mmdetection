@@ -46,6 +46,7 @@ def multi_gpu_test(model, data_loader, tmpdir=None, show_dir=None):
     if show_dir:
         if not os.path.exists(show_dir):
             os.makedirs(show_dir)
+    print("CLASSES: {}".format(model.module.CLASSES))
     for i, data in enumerate(data_loader):
         with torch.no_grad():
             result = model(return_loss=False, rescale=True, **data)
