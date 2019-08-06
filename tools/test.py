@@ -20,8 +20,6 @@ def single_gpu_test(model, data_loader, show=False):
     model.eval()
     results = []
     dataset = data_loader.dataset
-    cat_ids = dataset.coco.getCatIds()
-    class_names = [dataset.CLASSES[id] for id in cat_ids]
 
     prog_bar = mmcv.ProgressBar(len(dataset))
     for i, data in enumerate(data_loader):
@@ -29,7 +27,7 @@ def single_gpu_test(model, data_loader, show=False):
             result = model(return_loss=False, rescale=not show, **data)
         results.append(result)
         if show:
-            model.module.show_result(data, result, dataset.img_norm_cfg, class_names=class_names, show=show)
+            model.module.show_result(data, result, dataset.img_norm_cfg, show=show)
 
         batch_size = data['img'][0].size(0)
         for _ in range(batch_size):
@@ -43,8 +41,6 @@ def multi_gpu_test(model, data_loader, tmpdir=None, show_dir=None, score_thr=.95
     results_ = []
     dataset = data_loader.dataset
     rank, world_size = get_dist_info()
-    cat_ids = dataset.coco.getCatIds()
-    class_names = [dataset.CLASSES[id] for id in cat_ids]
 
     if rank == 0:
         prog_bar = mmcv.ProgressBar(len(dataset))
@@ -69,8 +65,7 @@ def multi_gpu_test(model, data_loader, tmpdir=None, show_dir=None, score_thr=.95
             filename = os.path.basename(filename)
             out_file = os.path.join(show_dir, filename)
 
-            model.module.show_result(data, result_, dataset.img_norm_cfg, class_names=class_names, score_thr=score_thr,
-                                     out_file=out_file)
+            model.module.show_result(data, result_, dataset.img_norm_cfg, score_thr=score_thr, out_file=out_file)
 
         if rank == 0:
             batch_size = data['img'][0].size(0)
