@@ -20,8 +20,6 @@ def single_gpu_test(model, data_loader, show=False):
     model.eval()
     results = []
     dataset = data_loader.dataset
-    cat_ids = dataset.coco.getCatIds()
-    class_names = [dataset.CLASSES[id] for id in cat_ids]
 
     prog_bar = mmcv.ProgressBar(len(dataset))
     for i, data in enumerate(data_loader):
@@ -29,7 +27,7 @@ def single_gpu_test(model, data_loader, show=False):
             result = model(return_loss=False, rescale=not show, **data)
         results.append(result)
         if show:
-            model.module.show_result(data, result, dataset.img_norm_cfg, class_names=class_names, show=show)
+            model.module.show_result(data, result, dataset.img_norm_cfg, show=show)
 
         batch_size = data['img'][0].size(0)
         for _ in range(batch_size):
@@ -43,15 +41,12 @@ def multi_gpu_test(model, data_loader, tmpdir=None, show_dir=None, score_thr=.95
     results_ = []
     dataset = data_loader.dataset
     rank, world_size = get_dist_info()
-    cat_ids = dataset.coco.getCatIds()
-    class_names = [dataset.CLASSES[id] for id in cat_ids]
 
     if rank == 0:
         prog_bar = mmcv.ProgressBar(len(dataset))
     if show_dir:
         if not os.path.exists(show_dir):
             os.makedirs(show_dir)
-    print("CLASSES: {}".format(model.module.CLASSES))
     for i, data in enumerate(data_loader):
         with torch.no_grad():
             result = model(return_loss=False, rescale=True, **data)
@@ -69,8 +64,7 @@ def multi_gpu_test(model, data_loader, tmpdir=None, show_dir=None, score_thr=.95
             filename = os.path.basename(filename)
             out_file = os.path.join(show_dir, filename)
 
-            model.module.show_result(data, result_, dataset.img_norm_cfg, class_names=class_names, score_thr=score_thr,
-                                     out_file=out_file)
+            model.module.show_result(data, result_, dataset.img_norm_cfg, score_thr=score_thr, out_file=out_file)
 
         if rank == 0:
             batch_size = data['img'][0].size(0)
@@ -210,11 +204,11 @@ def main():
             print('Starting evaluate {}'.format(' and '.join(eval_types)))
             if eval_types == ['proposal_fast']:
                 result_file = args.out
-                coco_eval(result_file, eval_types, dataset.coco)
+                coco_eval(result_file, eval_types, dataset.coco, cfg.work_dir)
             else:
                 if not isinstance(outputs[0], dict):
                     result_files = results2json(dataset, outputs, args.out)
-                    coco_eval(result_files, eval_types, dataset.coco)
+                    coco_eval(result_files, eval_types, dataset.coco, cfg.work_dir)
                 else:
                     for name in outputs[0]:
                         print('\nEvaluating {}'.format(name))
@@ -222,7 +216,7 @@ def main():
                         result_file = args.out + '.{}'.format(name)
                         result_files = results2json(dataset, outputs_,
                                                     result_file)
-                        coco_eval(result_files, eval_types, dataset.coco)
+                        coco_eval(result_files, eval_types, dataset.coco, cfg.work_dir)
 
 
 if __name__ == '__main__':
