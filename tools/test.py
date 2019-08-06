@@ -63,7 +63,7 @@ def multi_gpu_test(model, data_loader, tmpdir=None, show_dir=None):
             filename = meta["filename"]
             filename = os.path.basename(filename)
             out_file = os.path.join(show_dir, filename)
-            model.module.show_result(data, result_, dataset.img_norm_cfg, score_thr=.7, out_file=out_file)
+            model.module.show_result(data, result_, dataset.img_norm_cfg, score_thr=.95, out_file=out_file)
 
         if rank == 0:
             batch_size = data['img'][0].size(0)
