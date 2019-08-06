@@ -131,7 +131,10 @@ class BaseDetector(nn.Module):
                         0, 256, (1, 3), dtype=np.uint8)
                     mask = maskUtils.decode(segms[i]).astype(np.bool)
                     img_show[mask] = img_show[mask] * 0.5 + color_mask * 0.5
+
             # draw bounding boxes
+            print("# of bboxes"+" ".join(range(len(bbox_result))))
+
             labels = [
                 np.full(bbox.shape[0], cat_ids[i], dtype=np.int32)
                 for i, bbox in enumerate(bbox_result)

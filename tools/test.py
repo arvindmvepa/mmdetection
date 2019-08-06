@@ -42,6 +42,7 @@ def multi_gpu_test(model, data_loader, tmpdir=None, show_dir=None, score_thr=.95
     dataset = data_loader.dataset
     rank, world_size = get_dist_info()
     cat_ids = dataset.coco.getCatIds()
+    print("cat ids: {}".format(cat_ids))
     if rank == 0:
         prog_bar = mmcv.ProgressBar(len(dataset))
     if show_dir:
