@@ -91,7 +91,7 @@ class BaseDetector(nn.Module):
                     data,
                     result,
                     img_norm_cfg,
-                    cat_ids,
+                    class_names=None,
                     dataset=None,
                     score_thr=0.3,
                     show=False,
@@ -105,17 +105,17 @@ class BaseDetector(nn.Module):
         img_metas = data['img_meta'][0].data[0]
         imgs = tensor2imgs(img_tensor, **img_norm_cfg)
         assert len(imgs) == len(img_metas)
-
-        if dataset is None:
-            class_names = self.CLASSES
-        elif isinstance(dataset, str):
-            class_names = get_classes(dataset)
-        elif isinstance(dataset, (list, tuple)):
-            class_names = dataset
-        else:
-            raise TypeError(
-                'dataset must be a valid dataset name or a sequence'
-                ' of class names, not {}'.format(type(dataset)))
+        if class_names is None:
+            if dataset is None:
+                class_names = self.CLASSES
+            elif isinstance(dataset, str):
+                class_names = get_classes(dataset)
+            elif isinstance(dataset, (list, tuple)):
+                class_names = dataset
+            else:
+                raise TypeError(
+                    'dataset must be a valid dataset name or a sequence'
+                    ' of class names, not {}'.format(type(dataset)))
 
         for img, img_meta in zip(imgs, img_metas):
             h, w, _ = img_meta['img_shape']
@@ -133,10 +133,8 @@ class BaseDetector(nn.Module):
                     img_show[mask] = img_show[mask] * 0.5 + color_mask * 0.5
 
             # draw bounding boxes
-            print("# of bboxes"+" ".join([str(i) for i in range(len(bbox_result))]))
-
             labels = [
-                np.full(bbox.shape[0], cat_ids[i], dtype=np.int32)
+                np.full(bbox.shape[0], i, dtype=np.int32)
                 for i, bbox in enumerate(bbox_result)
             ]
             labels = np.concatenate(labels)
