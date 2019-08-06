@@ -91,6 +91,7 @@ class BaseDetector(nn.Module):
                     data,
                     result,
                     img_norm_cfg,
+                    cat_ids,
                     dataset=None,
                     score_thr=0.3,
                     show=False,
@@ -132,7 +133,7 @@ class BaseDetector(nn.Module):
                     img_show[mask] = img_show[mask] * 0.5 + color_mask * 0.5
             # draw bounding boxes
             labels = [
-                np.full(bbox.shape[0], i, dtype=np.int32)
+                np.full(bbox.shape[0], cat_ids[i], dtype=np.int32)
                 for i, bbox in enumerate(bbox_result)
             ]
             labels = np.concatenate(labels)
