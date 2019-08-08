@@ -287,8 +287,8 @@ class CustomDataset(Dataset):
                 img_shape=img_shape,
                 pad_shape=pad_shape,
                 scale_factor=scale_factor,
-                flip=flip,
-                filename=img_info['filename'])
+                flip=flip)
+                #filename=img_info['filename'])
             if proposal is not None:
                 if proposal.shape[1] == 5:
                     score = proposal[:, 4, None]
