@@ -36,6 +36,10 @@ def coco_eval(result_files, result_types, coco, max_dets=(100, 300, 1000)):
             cocoEval.params.maxDets = list(max_dets)
         cocoEval.evaluate()
         cocoEval.accumulate()
+        precision = cocoEval.eval["precision_"]
+        scores = cocoEval.eval["scores"]
+        np.save("precision", precision)
+        np.save("scores", scores)
         cocoEval.summarize()
 
 
