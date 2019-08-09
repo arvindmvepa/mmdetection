@@ -191,7 +191,7 @@ def get_max_pr_rc(prec_loc, score_loc, iouThr=.20, area_ind=0, num_det_ind=2):
     filt_scores = scores[iouThr_ind,:,:,area_ind,num_det_ind]
     print ("MAX PRECISION/RECALL COMBOS")
     for cat_id in range(filt_precs.shape[2]):
-        sum_pr_rc = filt_precs[:,cat_id] + recThrs
+        sum_pr_rc = filt_precs[cat_id,:] + recThrs
         max_i = np.argmax(sum_pr_rc)
         print("cat {}, pr: {}, rc: {}".format(filt_precs[max_i, cat_id], filt_scores[max_i, cat_id]))
 
