@@ -181,7 +181,7 @@ def results2json(dataset, results, out_file):
     return result_files
 
 
-def get_precision_arr(prec_loc, score_loc, iouThr=.20, area_ind=0, num_det_ind=2):
+def get_max_pr_rc(prec_loc, score_loc, iouThr=.20, area_ind=0, num_det_ind=2):
     iouThrs = np.linspace(.05, 0.95, np.round((0.95 - .05) / .05) + 1, endpoint=True)
     iouThr_ind = np.where(iouThr == iouThrs)[0]
     recThrs = np.linspace(.0, 1.00, np.round((1.00 - .0) / .01) + 1, endpoint=True)
