@@ -38,8 +38,8 @@ def coco_eval(result_files, result_types, coco, max_dets=(100, 300, 1000)):
         cocoEval.accumulate()
         precision = cocoEval.eval["precision_"]
         scores = cocoEval.eval["scores"]
-        np.save("precision", precision)
-        np.save("scores", scores)
+        np.save("precision_"+str(res_type), precision)
+        np.save("scores_"+str(res_type), scores)
         cocoEval.summarize()
 
 
