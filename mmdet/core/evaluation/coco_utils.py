@@ -187,8 +187,12 @@ def get_max_pr_rc(prec_loc, score_loc, iouThr=.20, area_ind=0, num_det_ind=2):
     recThrs = np.linspace(.0, 1.00, np.round((1.00 - .0) / .01) + 1, endpoint=True)
     precs = np.load(prec_loc)
     scores = np.load(score_loc)
+    print(precs.shape)
+    print(scores.shape)
     filt_precs = precs[iouThr_ind,:,:,area_ind,num_det_ind]
     filt_scores = scores[iouThr_ind,:,:,area_ind,num_det_ind]
+    print(filt_precs.shape)
+    print(filt_scores.shape)
     print ("MAX PRECISION/RECALL COMBOS")
     for cat_id in range(filt_precs.shape[2]):
         sum_pr_rc = filt_precs[cat_id,:] + recThrs
