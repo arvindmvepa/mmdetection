@@ -210,11 +210,11 @@ def main():
             print('Starting evaluate {}'.format(' and '.join(eval_types)))
             if eval_types == ['proposal_fast']:
                 result_file = args.out
-                coco_eval(result_file, eval_types, dataset.coco)
+                coco_eval(result_file, eval_types, dataset.coco, cfg.work_dir)
             else:
                 if not isinstance(outputs[0], dict):
                     result_files = results2json(dataset, outputs, args.out)
-                    coco_eval(result_files, eval_types, dataset.coco)
+                    coco_eval(result_files, eval_types, dataset.coco, cfg.work_dir)
                 else:
                     for name in outputs[0]:
                         print('\nEvaluating {}'.format(name))
@@ -222,7 +222,7 @@ def main():
                         result_file = args.out + '.{}'.format(name)
                         result_files = results2json(dataset, outputs_,
                                                     result_file)
-                        coco_eval(result_files, eval_types, dataset.coco)
+                        coco_eval(result_files, eval_types, dataset.coco, cfg.work_dir)
 
 
 if __name__ == '__main__':
