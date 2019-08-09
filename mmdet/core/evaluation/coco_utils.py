@@ -4,9 +4,9 @@ from pycocotools.coco import COCO
 from pycocotools.cocoeval import COCOeval
 
 from .recall import eval_recalls
+import os
 
-
-def coco_eval(result_files, result_types, coco, max_dets=(100, 300, 1000)):
+def coco_eval(result_files, result_types, coco, work_dir, max_dets=(100, 300, 1000)):
     for res_type in result_types:
         assert res_type in [
             'proposal', 'proposal_fast', 'bbox', 'segm', 'keypoints'
@@ -38,8 +38,8 @@ def coco_eval(result_files, result_types, coco, max_dets=(100, 300, 1000)):
         cocoEval.accumulate()
         precision = cocoEval.eval["precision_"]
         scores = cocoEval.eval["scores"]
-        np.save("precision_"+str(res_type), precision)
-        np.save("scores_"+str(res_type), scores)
+        np.save(os.path.join(work_dir, "precision_"+str(res_type)), precision)
+        np.save(os.path.join(work_dir, "scores_"+str(res_type)), scores)
         cocoEval.summarize()
 
 
