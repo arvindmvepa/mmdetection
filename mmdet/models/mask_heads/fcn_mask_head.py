@@ -159,6 +159,7 @@ class FCNMaskHead(nn.Module):
         for i in range(bboxes.shape[0]):
             bbox = (bboxes[i, :] / scale_factor).astype(np.int32)
             label = labels[i]
+            # bug if bbox dimensions are beyond image size - more of an issue early in training
             w = max(bbox[2] - bbox[0] + 1, 1)
             h = max(bbox[3] - bbox[1] + 1, 1)
 
@@ -171,12 +172,6 @@ class FCNMaskHead(nn.Module):
             bbox_mask = mmcv.imresize(mask_pred_, (w, h))
             bbox_mask = (bbox_mask > rcnn_test_cfg.mask_thr_binary).astype(
                 np.uint8)
-            print("h: {}".format(h))
-            print("w: {}".format(w))
-            print("im_mask.shape: {}".format(im_mask.shape))
-            print("bbox[0]: {}".format(bbox[0]))
-            print("bbox[1]: {}".format(bbox[1]))
-            print("bbox_mask.shape: {}".format(bbox_mask.shape))
             im_mask[bbox[1]:bbox[1] + h, bbox[0]:bbox[0] + w] = bbox_mask
             rle = mask_util.encode(
                 np.array(im_mask[:, :, np.newaxis], order='F'))[0]
