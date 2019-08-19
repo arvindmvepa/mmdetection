@@ -23,9 +23,6 @@ class CocoDataset(CustomDataset):
         for i in self.img_ids:
             info = self.coco.loadImgs([i])[0]
             info['filename'] = info['file_name']
-            # hard-code
-            info["height"] = 1080
-            info["width"] = 1920
             img_infos.append(info)
         return img_infos
 
