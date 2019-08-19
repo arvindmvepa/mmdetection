@@ -176,6 +176,7 @@ class FCNMaskHead(nn.Module):
             print("im_mask.shape: {}".format(im_mask.shape))
             print("bbox[0]: {}".format(bbox[0]))
             print("bbox[1]: {}".format(bbox[1]))
+            print("bbox_mask.shape: {}".format(bbox_mask.shape))
             im_mask[bbox[1]:bbox[1] + h, bbox[0]:bbox[0] + w] = bbox_mask
             rle = mask_util.encode(
                 np.array(im_mask[:, :, np.newaxis], order='F'))[0]
