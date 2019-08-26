@@ -201,6 +201,6 @@ def get_max_pr_rc(prec_loc, score_loc, iouThr=.20, area_ind=0, num_det_ind=2):
         table_data.append([cat_id, round(f1_score[max_i],4), round(filt_precs[max_i, cat_id],4),
                            round(recThrs[max_i],4), round(filt_scores[max_i, cat_id], 4)])
     table = AsciiTable(table_data)
-    print(table)
+    print(table.table)
 
 
