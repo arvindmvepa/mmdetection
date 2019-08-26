@@ -2,6 +2,7 @@ import mmcv
 import numpy as np
 from pycocotools.coco import COCO
 from pycocotools.cocoeval import COCOeval
+from terminaltables import AsciiTable
 
 from .recall import eval_recalls
 import os
@@ -187,18 +188,19 @@ def get_max_pr_rc(prec_loc, score_loc, iouThr=.20, area_ind=0, num_det_ind=2):
     recThrs = np.linspace(.0, 1.00, np.round((1.00 - .0) / .01) + 1, endpoint=True)
     precs = np.load(prec_loc)
     scores = np.load(score_loc)
-    print(precs.shape)
-    print(scores.shape)
     filt_precs = np.squeeze(precs[iouThr_ind,:,:,area_ind,num_det_ind])
     filt_scores = np.squeeze(scores[iouThr_ind,:,:,area_ind,num_det_ind])
-    print(filt_precs.shape)
-    print(filt_scores.shape)
-    print ("MAX PRECISION/RECALL COMBOS")
+    table_data = [
+        ['Category ID', 'Max F1/Dice', 'Precision', 'Recall', 'Conf. Thresh'],
+    ]
     for cat_id in range(filt_precs.shape[1]):
         sum_pr_rc = np.squeeze(filt_precs[:, cat_id]) + recThrs
-        max_i = np.argmax(sum_pr_rc)
-        print("cat {}, pr: {}, rc: {}, score: {}".format(cat_id, filt_precs[max_i, cat_id], recThrs[max_i],
-                                                         filt_scores[max_i, cat_id]))
-
+        prod_pr_rc = np.squeeze(filt_precs[:, cat_id]) * recThrs
+        f1_score = (2*prod_pr_rc)/sum_pr_rc
+        max_i = np.argmax(f1_score)
+        table_data.append([cat_id, round(f1_score[max_i],4), round(filt_precs[max_i, cat_id],4),
+                           round(recThrs[max_i],4), round(filt_scores[max_i, cat_id], 4)])
+    table = AsciiTable(table_data)
+    print(table)
 
 
