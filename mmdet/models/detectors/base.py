@@ -145,6 +145,7 @@ class BaseDetector(nn.Module):
             img_show = img[:h, :w, :]
 
             bboxes = np.vstack(bbox_result)
+            i = np.argmax(bboxes[:, -1])
             bboxes = bboxes[i, ...]
             # draw segmentation masks
             if segm_result is not None:
