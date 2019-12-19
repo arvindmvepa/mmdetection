@@ -143,7 +143,7 @@ class BaseDetector(nn.Module):
         for img, img_meta in zip(imgs, img_metas):
             h, w, _ = img_meta['img_shape']
             img_show = img[:h, :w, :]
-
+            print("bbox result: {}".format(bbox_result))
             bboxes = np.vstack(bbox_result)
             if len(bboxes) > 0:
                 i = np.argmax(bboxes[:, -1])
