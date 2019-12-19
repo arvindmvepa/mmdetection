@@ -164,6 +164,7 @@ class BaseDetector(nn.Module):
                 for i, bbox in enumerate(bbox_result)
             ]
             labels = np.concatenate(labels)
+            print("\n")
             print(len(bbox_result))
             print(labels.shape)
             print(bboxes.shape)
