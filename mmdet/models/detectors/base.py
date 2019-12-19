@@ -118,7 +118,7 @@ class BaseDetector(nn.Module):
         else:
             return self.forward_test(img, img_meta, **kwargs)
 
-    def show_result(self, data, result, dataset=None, score_thr=0.3):
+    def show_result(self, data, result, dataset=None, score_thr=0.05):
         if isinstance(result, tuple):
             bbox_result, segm_result = result
         else:
@@ -143,8 +143,11 @@ class BaseDetector(nn.Module):
         for img, img_meta in zip(imgs, img_metas):
             h, w, _ = img_meta['img_shape']
             img_show = img[:h, :w, :]
-
             bboxes = np.vstack(bbox_result)
+            if len(bboxes) > 0:
+                i = np.argmax(bboxes[:, -1])
+                bboxes = np.expand_dims(bboxes[i, :], axis=0)
+                bbox_result= [bbox_result[i]]
             # draw segmentation masks
             if segm_result is not None:
                 segms = mmcv.concat_list(segm_result)
