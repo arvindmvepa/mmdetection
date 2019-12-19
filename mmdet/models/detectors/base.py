@@ -148,6 +148,7 @@ class BaseDetector(nn.Module):
             if len(bboxes) > 0:
                 i = np.argmax(bboxes[:, -1])
                 bboxes = np.expand_dims(bboxes[i, :], axis=0)
+                bbox_result= [bbox_result[i]]
             # draw segmentation masks
             if segm_result is not None:
                 segms = mmcv.concat_list(segm_result)
