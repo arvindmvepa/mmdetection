@@ -92,7 +92,7 @@ def inference_detector(model, img):
 def show_result(img,
                 result,
                 class_names,
-                score_thr=0.3,
+                score_thr=0.05,
                 wait_time=0,
                 show=True,
                 out_file=None):
@@ -121,15 +121,16 @@ def show_result(img,
     else:
         bbox_result, segm_result = result, None
     bboxes = np.vstack(bbox_result)
+    i = np.argmax(bboxes[:, -1])
+    bboxes = bboxes[i,...]
     # draw segmentation masks
     if segm_result is not None:
         segms = mmcv.concat_list(segm_result)
-        #inds = np.where(bboxes[:, -1] > score_thr)[0]
-        i = np.argmax(bboxes[:, -1])
-        #for i in inds:
-        color_mask = np.random.randint(0, 256, (1, 3), dtype=np.uint8)
-        mask = maskUtils.decode(segms[i]).astype(np.bool)
-        img[mask] = img[mask] * 0.5 + color_mask * 0.5
+        inds = np.where(bboxes[:, -1] > score_thr)[0]
+        for i in inds:
+            color_mask = np.random.randint(0, 256, (1, 3), dtype=np.uint8)
+            mask = maskUtils.decode(segms[i]).astype(np.bool)
+            img[mask] = img[mask] * 0.5 + color_mask * 0.5
     # draw bounding boxes
     labels = [
         np.full(bbox.shape[0], i, dtype=np.int32)
