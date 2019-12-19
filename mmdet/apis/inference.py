@@ -121,8 +121,9 @@ def show_result(img,
     else:
         bbox_result, segm_result = result, None
     bboxes = np.vstack(bbox_result)
-    i = np.argmax(bboxes[:, -1])
-    bboxes = bboxes[i,...]
+    if len(bboxes) > 0:
+        i = np.argmax(bboxes[:, -1])
+        bboxes = bboxes[i, ...]
     # draw segmentation masks
     if segm_result is not None:
         segms = mmcv.concat_list(segm_result)
