@@ -143,7 +143,7 @@ class BaseDetector(nn.Module):
         for img, img_meta in zip(imgs, img_metas):
             h, w, _ = img_meta['img_shape']
             img_show = img[:h, :w, :]
-            print("bbox result: {}".format(bbox_result))
+            #print("bbox result: {}".format(bbox_result))
             bboxes = np.vstack(bbox_result)
             if len(bboxes) > 0:
                 i = np.argmax(bboxes[:, -1])
@@ -164,10 +164,10 @@ class BaseDetector(nn.Module):
                 for i, bbox in enumerate(bbox_result)
             ]
             labels = np.concatenate(labels)
-            print("\n")
-            print(len(bbox_result))
-            print(labels.shape)
-            print(bboxes.shape)
+            #print("\n")
+            #print(len(bbox_result))
+            #print(labels.shape)
+            #print(bboxes.shape)
             mmcv.imshow_det_bboxes(
                 img_show,
                 bboxes,
