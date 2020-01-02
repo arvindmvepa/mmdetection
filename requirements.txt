@@ -4,7 +4,7 @@ matplotlib
 six
 terminaltables
 pycocotools
-torch>=1.1
-torchvision
+torch==1.1.0
+torchvision==0.3.0
 imagecorruptions
 albumentations>=0.3.2
